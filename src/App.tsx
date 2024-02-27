@@ -1,8 +1,9 @@
+import { Routes, Route } from "react-router-dom";
+
 import "./App.css";
+import Cart from "./components/Cart";
 import Header from "../src/components/Header";
 import Main from "./components/Main";
-import { Routes, Route } from "react-router-dom";
-import Cart from "./components/Cart";
 
 function App() {
   return (

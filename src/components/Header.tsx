@@ -1,12 +1,13 @@
 import { BasketOutline } from "react-ionicons";
-import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+
 import { productSearch } from "../redux/productAction";
 
 const Header = () => {
   const result = useSelector((state: any) => state.cartData);
   const dispatch = useDispatch();
-  console.warn("data in header", result);
+
   return (
     <div className="header">
       <Link to="/">
