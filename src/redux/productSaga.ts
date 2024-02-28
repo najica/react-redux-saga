@@ -7,10 +7,11 @@ import {
   SET_PRODUCT_LIST,
 } from "./constant";
 
-const url: string = "https://dummyjson.com/products/";
+const apiUrl: string = process.env.REACT_APP_API_URL as string;
+//or with non-null assertion operator (!) //const apiUrl: string = process.env.REACT_APP_API_URL!;
 
 function productsFetch() {
-  return fetch(url).then((response) => response.json());
+  return fetch(apiUrl).then((response) => response.json());
 }
 
 function* workGetProducts(): any {
@@ -24,7 +25,7 @@ function* workGetProducts(): any {
 
 function* workSearchProducts(data: any): any {
   try {
-    const result = yield fetch(`${url}search?q=${data.query}`).then(
+    const result = yield fetch(`${apiUrl}search?q=${data.query}`).then(
       (response) => response.json()
     );
     yield put({ type: SET_PRODUCT_LIST, data: result });
