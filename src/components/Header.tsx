@@ -2,10 +2,13 @@ import { BasketOutline } from "react-ionicons";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
-import { productSearch } from "../redux/productAction";
+import { ICartState } from "../redux/cart/types";
+import { RootState } from "../redux/reducers/rootReducer";
+import { productSearch } from "../redux/product/actions";
 
 const Header = () => {
-  const result = useSelector((state: any) => state.cartData);
+  const result: ICartState = useSelector((state: RootState) => state.cart);
+
   const dispatch = useDispatch();
 
   return (
@@ -22,7 +25,7 @@ const Header = () => {
       </div>
       <Link to="/cart">
         <div className="cart-div">
-          <span>{result.length}</span>
+          <span className="cart-counter">{result?.cartItems?.length}</span>
           <BasketOutline color={"#00000"} height="30px" width="30px" />
         </div>
       </Link>

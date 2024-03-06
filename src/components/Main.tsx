@@ -1,41 +1,91 @@
+import {
+  Box,
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+} from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 
-import { addToCart, emptyCart, removeToCart } from "../redux/action";
-import { productList } from "../redux/productAction";
+import { IProduct, IProductState } from "../redux/product/types";
+import { RootState } from "../redux/reducers/rootReducer";
+import { addToCart, emptyCart, removeFromCart } from "../redux/cart/action";
+import { getProducts } from "../redux/product/actions";
+import Header from "./Header";
 
 const Main = () => {
   const dispatch = useDispatch();
-  let data = useSelector((state: any) => state.productData);
+  const data: IProductState = useSelector((state: RootState) => state.products);
 
   useEffect(() => {
-    dispatch(productList());
+    dispatch(getProducts());
   }, []);
 
   return (
     <>
-      <div>
-        <button onClick={() => dispatch(emptyCart())}>Empty Cart</button>
-      </div>
-      <div className="product-container">
-        {data.map((item: any) => (
-          <div className="product-item">
-            <img src={item.images[0]} alt="" />
-            <div>Title: {item.title}</div>
-            <div>Description: {item.description}</div>
-            <div>Brand: {item.brand}</div>
-            <div>Category: {item.category}</div>
-            <button onClick={() => dispatch(addToCart(item))}>
-              Add to Cart
-            </button>
-            <div>
-              <button onClick={() => dispatch(removeToCart(item.id))}>
-                Remove from Cart
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
+      <Header />
+      <Box
+        sx={{
+          height: "85vh",
+          overflowY: "scroll",
+        }}
+      >
+        <Box sx={{ margin: "10px" }}>
+          <Button variant="contained" onClick={() => dispatch(emptyCart())}>
+            Empty Cart
+          </Button>
+        </Box>
+        <Box>
+          <TableContainer>
+            <Table sx={{ minWidth: 750 }}>
+              <TableBody>
+                {data.productItems.map((item: IProduct) => (
+                  <TableRow className="product-row">
+                    <TableCell>
+                      <img src={item.images[0]} alt="" />
+                    </TableCell>
+                    <TableRow sx={{ display: "flex", flexDirection: "column" }}>
+                      <TableCell sx={{ borderBottom: "none" }}>
+                        Description: {item.description}
+                      </TableCell>
+                      <TableCell sx={{ borderBottom: "none" }}>
+                        Price: {item.price}
+                      </TableCell>
+                      <TableCell sx={{ borderBottom: "none" }}>
+                        Brand: {item.brand}
+                      </TableCell>
+                      <TableCell sx={{ borderBottom: "none" }}>
+                        Category: {item.category}
+                      </TableCell>
+                    </TableRow>
+                    <TableCell>
+                      <TableCell sx={{ borderBottom: "none" }}>
+                        <Button
+                          variant="outlined"
+                          onClick={() => dispatch(addToCart(item))}
+                        >
+                          Add to Cart
+                        </Button>
+                      </TableCell>
+                      <TableCell sx={{ borderBottom: "none" }}>
+                        <Button
+                          variant="outlined"
+                          onClick={() => dispatch(removeFromCart(item.id))}
+                        >
+                          Remove from Cart
+                        </Button>
+                      </TableCell>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
+      </Box>
     </>
   );
 };
